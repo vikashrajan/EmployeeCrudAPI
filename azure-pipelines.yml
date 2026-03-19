@@ -1,0 +1,75 @@
+trigger:
+- main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  buildConfiguration: 'Release'
+  azureServiceConnection: 'YOUR_SERVICE_CONNECTION_NAME' # Update this in Azure DevOps
+  webAppName: 'YOUR_APP_SERVICE_NAME' # Update this in Azure DevOps
+
+stages:
+- stage: Build
+  displayName: 'Build and Publish Stage'
+  jobs:
+  - job: BuildJob
+    displayName: 'Build and Publish'
+    steps:
+    - task: UseDotNet@2
+      displayName: 'Install .NET Core SDK'
+      inputs:
+        version: '9.x'
+        performMultiLevelLookup: true
+
+    - task: DotNetCoreCLI@2
+      displayName: 'Restore dependencies'
+      inputs:
+        command: 'restore'
+        projects: '**/*.csproj'
+
+    - task: DotNetCoreCLI@2
+      displayName: 'Build Web API'
+      inputs:
+        command: 'build'
+        projects: '**/EmployeeCrud.API.csproj'
+        arguments: '--configuration $(buildConfiguration) --no-restore'
+
+    - task: DotNetCoreCLI@2
+      displayName: 'Publish Web API'
+      inputs:
+        command: 'publish'
+        publishWebProjects: false
+        projects: '**/EmployeeCrud.API.csproj'
+        arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)/publish'
+        zipAfterPublish: true
+
+    - task: PublishPipelineArtifact@1
+      displayName: 'Publish Pipeline Artifacts'
+      inputs:
+        targetPath: '$(Build.ArtifactStagingDirectory)/publish'
+        artifact: 'drop'
+        publishLocation: 'pipeline'
+
+- stage: Deploy
+  displayName: 'Deploy to Azure'
+  dependsOn: Build
+  condition: succeeded()
+  jobs:
+  - job: DeployJob
+    displayName: 'Deploy App Service'
+    steps:
+    - task: DownloadPipelineArtifact@2
+      inputs:
+        buildType: 'current'
+        artifactName: 'drop'
+        targetPath: '$(Pipeline.Workspace)/drop'
+
+    - task: AzureRmWebAppDeployment@4
+      displayName: 'Deploy to Azure App Service'
+      inputs:
+        ConnectionType: 'AzureRM'
+        azureSubscription: '$(azureServiceConnection)'
+        appType: 'webApp'
+        WebAppName: '$(webAppName)'
+        packageForLinux: '$(Pipeline.Workspace)/drop/**/*.zip'
