@@ -2,12 +2,13 @@ trigger:
 - main
 
 pool:
-  vmImage: 'ubuntu-latest'
+  name: 'Default'
+
 
 variables:
   buildConfiguration: 'Release'
-  azureServiceConnection: 'YOUR_SERVICE_CONNECTION_NAME' # Update this in Azure DevOps
-  webAppName: 'YOUR_APP_SERVICE_NAME' # Update this in Azure DevOps
+  azureServiceConnection: 'APIServiceConnection' # Update this in Azure DevOps
+  webAppName: 'employeecrudeapi' # Update this in Azure DevOps
 
 stages:
 - stage: Build
