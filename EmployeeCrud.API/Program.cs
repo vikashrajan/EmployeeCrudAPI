@@ -16,9 +16,18 @@ builder.Host.UseSerilog((context, services, configuration) => configuration
 
 builder.Services.AddControllers();
 
+// Make SQLite Path Dynamic for Azure App Service
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("WEBSITE_SITE_NAME")) && 
+    !string.IsNullOrEmpty(Environment.GetEnvironmentVariable("HOME")))
+{
+    // If running in Azure, forcefully route SQLite to the persistent writable /home directory
+    connectionString = $"Data Source={Environment.GetEnvironmentVariable("HOME")}/employee.db";
+}
+
 // Configure Entity Framework Core with SQLite
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlite(connectionString));
 
 // Register custom services
 builder.Services.AddScoped<IEmployeeService, EmployeeService>();
