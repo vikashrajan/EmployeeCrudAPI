@@ -1,4 +1,4 @@
-# EmployeeCrud API Architecture
+ ## EmployeeCrud API Architecture
 
 A modern, fully automated **ASP.NET Core (.NET 9)** RESTful API demonstrating clean architecture, persistent SQLite integration, strict Header-based Authorization, automated Azure CI/CD Pipelines, and Azure API Management (APIM) routing.
 
