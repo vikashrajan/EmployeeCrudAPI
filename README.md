@@ -1,4 +1,4 @@
- ## EmployeeCrud API Architecture
+
 
 A modern, fully automated **ASP.NET Core (.NET 9)** RESTful API demonstrating clean architecture, persistent SQLite integration, strict Header-based Authorization, automated Azure CI/CD Pipelines, and Azure API Management (APIM) routing.
 
@@ -54,3 +54,25 @@ To prevent handing out your backend `SuperSecretApiKey123` to the world, use the
 4. Save the policy. 
 
 **Result:** The Gateway will instantly demand an OCP Subscription Key from public users, seamlessly inject the backend `X-Api-Key` password behind the scenes, securely fetch your SQLite data, and relay the response perfectly!
+
+<img width="1345" height="398" alt="image" src="https://github.com/user-attachments/assets/b3b2fbbc-a1a6-44c8-b268-206b33c138ca" />
+
+
+<img width="1327" height="665" alt="image" src="https://github.com/user-attachments/assets/7693ac5b-f309-417d-bd3e-f61e08795eb2" />
+
+
+
+![Uploading imae.png…]()
+
+<img width="1358" height="429" alt="image" src="https://github.com/user-attachments/assets/4ce22cc3-22ff-4e32-9188-7ed9d9b22e14" /> ## EmployeeCrud API Architecture
+
+
+<img width="1352" height="601" alt="image" src="https://github.com/user-attachments/assets/d7378bc6-dca6-46e2-bc69-86a03af1879d" />
+
+<img width="1343" height="631" alt="image" src="https://github.com/user-attachments/assets/e195cc42-3e33-4063-9a36-c90c9aa06281" />
+
+
+
+
+
+
